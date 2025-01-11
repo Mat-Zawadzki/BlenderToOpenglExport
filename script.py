@@ -2,7 +2,7 @@ import bpy
 import bmesh
 from collections import defaultdict
 
-scale_value = 50
+scale_value = 64
 
 # Function to calculate vertex normals and store unique vertices
 def get_unique_vertices_with_normals_and_ibo(obj):
@@ -65,6 +65,7 @@ def get_unique_vertices_with_normals_and_ibo(obj):
             
          # Create edge index buffer
         for edge in face.edges:
+            edge_pair = []
             for vert in edge.verts:
                 vert_pos = (round(vert.co.x, 4), round(vert.co.y, 4), round(vert.co.z, 4))
                 vert_normal = (round(face_normal.x, 2), round(face_normal.y, 2), round(face_normal.z, 2))
@@ -73,7 +74,12 @@ def get_unique_vertices_with_normals_and_ibo(obj):
                 
                 index = index_mapping[unique_key]
                 
-                edge_index_buffer.append(index)
+                edge_pair.append(index)
+                
+            edge_pair = tuple(edge_pair)
+                
+            if edge_pair not in edge_index_buffer:
+                edge_index_buffer.append(edge_pair)
                 unique_edges.add(unique_key)
 
     # Clean up
@@ -114,8 +120,10 @@ def write_to_file3(file_path, unique_vertices, index_buffer, edge_index_buffer):
         for i in range(0, len(edge_index_buffer), 10):
             # Get the next 10 items (or fewer if at the end of the list)
             chunk = edge_index_buffer[i:i + 10]
-            # Write the items to the file, joined by ", "
-            f.write(", ".join(map(str, chunk)) + ",\n")
+            # Format each pair as "x, y" and join them with ", "
+            formatted_chunk = ", ".join(f"{x}, {y}" for x, y in chunk)
+            # Write the formatted string to the file
+            f.write(formatted_chunk + ", \n")  # Add a newline at the end
             
             
 
