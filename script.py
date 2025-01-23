@@ -87,11 +87,10 @@ def get_unique_vertices_with_normals_and_ibo(obj):
         
     return unique_vertex_list, index_buffer, edge_index_buffer
 
-# Function to write the unique vertices and index buffer to a file
+# Function to write the unique vertices
 def write_to_file1(file_path, unique_vertices, index_buffer, edge_index_buffer):
     with open(file_path, 'w') as f:
-        f.write("Unique Vertices with Normals:\n")
-        f.write(f"vertecies: {len(unique_vertices)},\n")
+        f.write(f"{len(unique_vertices)}\n")
         for vertex in unique_vertices:
             position_str = f"{round(vertex['position'][0] * scale_value,1)}, {round(vertex['position'][1] * scale_value,1)}, {round(vertex['position'][2] * scale_value,1)}"
             normal_str = f"{vertex['normal'][0]}, {vertex['normal'][1]}, {vertex['normal'][2]}"
@@ -99,24 +98,20 @@ def write_to_file1(file_path, unique_vertices, index_buffer, edge_index_buffer):
             f.write(f"{position_str}, {normal_str}, {color_str}, 1.0f,\n")
            
             
-            # Function to write the unique vertices and index buffer to a file
+            # Function to write the unique triangle
 def write_to_file2(file_path, unique_vertices, index_buffer, edge_index_buffer):
     with open(file_path, 'w') as f:
-        f.write("\nIndex Buffer Size and indexes:\n")
-        f.write(f"{len(index_buffer)},\n")
+        f.write(f"{len(index_buffer)}\n")
         for i in range(0, len(index_buffer), 10):
             # Get the next 10 items (or fewer if at the end of the list)
             chunk = index_buffer[i:i + 10]
             # Write the items to the file, joined by ", "
             f.write(", ".join(map(str, chunk)) + ",\n")
             
-            # Function to write the unique vertices and index buffer to a file
+            # Function to write the unique lines
 def write_to_file3(file_path, unique_vertices, index_buffer, edge_index_buffer):
     with open(file_path, 'w') as f:
-        f.write("Unique Vertices with Normals:\n")
-            
-        f.write("\n LINE Index Buffer Size and indexes:\n")
-        f.write(f"{len(edge_index_buffer)},\n")
+        f.write(f"{len(edge_index_buffer)}\n")
         for i in range(0, len(edge_index_buffer), 10):
             # Get the next 10 items (or fewer if at the end of the list)
             chunk = edge_index_buffer[i:i + 10]
@@ -133,7 +128,7 @@ active_obj = bpy.context.active_object
 # Call the function and get the unique vertices with normals and the IBO
 unique_vertices_with_normals_colors, index_buffer, edge_index_buffer = get_unique_vertices_with_normals_and_ibo(active_obj)
 
-object_name = ("Castle2")
+object_name = ("FloorTest1")
 
  
 # Specify the file path where you want to save the data
